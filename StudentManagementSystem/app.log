@@ -1,0 +1,19 @@
+INFO 2024-11-19 18:31:59,805 autoreload Watching for file changes with StatReloader
+INFO 2024-11-19 18:34:10,987 autoreload /Users/kalkadam/Desktop/KBTU_Django/wsp_v2/StudentManagementSystem/users/views.py changed, reloading.
+INFO 2024-11-19 18:34:11,332 autoreload Watching for file changes with StatReloader
+INFO 2024-11-19 18:38:28,857 autoreload /Users/kalkadam/Desktop/KBTU_Django/wsp_v2/StudentManagementSystem/courses/views.py changed, reloading.
+INFO 2024-11-19 18:38:29,183 autoreload Watching for file changes with StatReloader
+INFO 2024-11-19 18:39:18,981 autoreload /Users/kalkadam/Desktop/KBTU_Django/wsp_v2/StudentManagementSystem/attendance/views.py changed, reloading.
+INFO 2024-11-19 18:39:19,291 autoreload Watching for file changes with StatReloader
+INFO 2024-11-19 18:39:38,049 autoreload /Users/kalkadam/Desktop/KBTU_Django/wsp_v2/StudentManagementSystem/grades/views.py changed, reloading.
+INFO 2024-11-19 18:39:38,323 autoreload Watching for file changes with StatReloader
+INFO 2024-11-19 18:40:05,463 basehttp "GET /api/students/ HTTP/1.1" 200 13185
+INFO 2024-11-19 18:40:14,706 basehttp "GET /api/attendance/ HTTP/1.1" 200 10567
+INFO 2024-11-19 18:40:35,725 basehttp "POST /api/attendance/ HTTP/1.1" 201 10661
+INFO 2024-11-19 18:40:53,458 basehttp "POST /api/attendance/ HTTP/1.1" 201 10660
+WARNING 2024-11-19 18:41:02,462 log Bad Request: /api/attendance/
+WARNING 2024-11-19 18:41:02,463 basehttp "POST /api/attendance/ HTTP/1.1" 400 10616
+INFO 2024-11-19 18:41:09,606 basehttp "GET /api/ HTTP/1.1" 200 6579
+INFO 2024-11-19 18:41:12,516 basehttp "GET /api/attendance/ HTTP/1.1" 200 11028
+INFO 2024-11-19 18:53:07,540 basehttp "GET /api/docs/ HTTP/1.1" 200 4662
+INFO 2024-11-19 18:53:07,734 basehttp "GET /api/schema/ HTTP/1.1" 200 122860
