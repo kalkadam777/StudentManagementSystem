@@ -7,6 +7,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from StudentManagementSystem.filter import CourseFilter
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from django.core.cache import cache
 import logging
 
 logger = logging.getLogger(__name__)
@@ -36,6 +39,34 @@ class CourseViewSet(viewsets.ModelViewSet):
         if self.action in ['create', 'update', 'destroy']:
             return [permissions.IsAuthenticated(), IsTeacherOrAdmin()]
         return [permissions.IsAuthenticated()]
+    
+    @action(detail=False, methods=['get'])
+    def instructor_courses(self, request):
+        instructor_id = request.user.id
+        cache_key = f'instructor_courses_{instructor_id}'
+        courses = cache.get(cache_key)
+
+        if not courses:
+            courses = Course.objects.filter(instructor_id=instructor_id)
+            cache.set(cache_key, courses, timeout=3600)  # Cache for 1 hour
+
+        serializer = self.get_serializer(courses, many=True)
+        return Response(serializer.data)
+    
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        instructor_id = serializer.validated_data['instructor'].id
+        cache_key = f'instructor_courses_{instructor_id}'
+        cache.delete(cache_key)
+
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        instructor_id = serializer.validated_data['instructor'].id
+        cache_key = f'instructor_courses_{instructor_id}'
+        cache.delete(cache_key)
+
+    
+
     
     
     

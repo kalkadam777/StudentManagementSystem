@@ -31,8 +31,15 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = '6379'
 
 CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
+
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+
+CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_EAGER_PROPAGATES = True
+
 
 
 # Application definition
@@ -55,6 +62,8 @@ INSTALLED_APPS = [
     'djoser',
     'django_filters',
     'drf_spectacular',
+    'django_celery_beat',
+    'analytics',
 ]
 
 MIDDLEWARE = [
@@ -83,6 +92,15 @@ REST_FRAMEWORK = {
     ),
     
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '100/day',  # Ограничение на 100 запросов в день для одного пользователя
+        'anon': '10/day',  # Ограничение на 10 запросов в день для анонимных пользователей
+    }
 }
 
 
@@ -132,6 +150,18 @@ LOGGING = {
         },
     },
 }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',  # Redis server address
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'StudentManagementSystem'  # Unique prefix for cache keys
+    }
+}
+
 
 
 ROOT_URLCONF = 'StudentManagementSystem.urls'
@@ -208,3 +238,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  
+EMAIL_PORT = 587 
+EMAIL_USE_TLS = True  
+EMAIL_HOST_USER = 'test123@gmail.com'  
+EMAIL_HOST_PASSWORD = 'password123'  
